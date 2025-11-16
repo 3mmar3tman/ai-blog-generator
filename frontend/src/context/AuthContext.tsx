@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(res.data.user);
       toast.success("Registration successful!");
       return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.error ||
@@ -117,6 +117,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       toast.success("Logged out successfully");
     } catch (error) {
       toast.error("Logout failed");
+      console.error(error);
     }
   };
 
