@@ -42,12 +42,9 @@ export const useAuth = (): AuthContextType => {
 interface AuthProviderProps {
   children: ReactNode;
 }
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     checkAuth();
@@ -55,12 +52,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const checkAuth = async () => {
     try {
-      const res = await axios.get(`${API_URL}/Users/me`, {
+      const res = await axios.get("http://localhost:5000/Users/me", {
         withCredentials: true,
       });
+
       setUser(res.data.user);
     } catch (error) {
       setUser(null);
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -69,18 +68,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string) => {
     try {
       const res = await axios.post(
-        `${API_URL}/Users/login`,
+        "http://localhost:5000/Users/login",
         { email, password },
         { withCredentials: true }
       );
+
       setUser(res.data.user);
-      toast.success("Login successful");
+      toast.success("login successful");
       return { success: true };
     } catch (error: any) {
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.error ||
-          "Login failed"
+          "login failed"
       );
       return { success: false };
     }
@@ -89,14 +89,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (name: string, email: string, password: string) => {
     try {
       const res = await axios.post(
-        `${API_URL}/Users/register`,
+        "http://localhost:5000/Users/register",
         { name, email, password },
         { withCredentials: true }
       );
       setUser(res.data.user);
       toast.success("Registration successful!");
       return { success: true };
-    } catch (error: unknown) {
+    } catch (error: any) {
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.error ||
@@ -109,15 +109,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     try {
       await axios.post(
-        `${API_URL}/Users/logout`,
+        "http://localhost:5000/Users/logout",
         {},
         { withCredentials: true }
       );
+
       setUser(null);
       toast.success("Logged out successfully");
     } catch (error) {
+      console.log(error);
       toast.error("Logout failed");
-      console.error(error);
     }
   };
 

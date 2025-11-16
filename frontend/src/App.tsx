@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import AddBlog from "./pages/AddBlog";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/add-blog" element={<AddBlog />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>

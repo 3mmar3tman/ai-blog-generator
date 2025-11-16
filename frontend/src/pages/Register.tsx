@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../utils/autApi";
+import { registerUser } from "../utils/autApi";
 
-function Login() {
+function Register() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const user = await loginUser(email, password);
+      const user = await registerUser(name, email, password);
       if (user) {
         setUser(user);
         toast.success("Welcome back! 👋");
@@ -39,6 +40,20 @@ function Login() {
         </h2>
 
         <form onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-sm font-medium text-sky-800 mb-1">
+              Name
+            </label>
+
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-lg border border-sky-200 px-4 py-2 focus:ring-2 focus:ring-sky-300 outline-none"
+              placeholder="Enter your Name"
+              required
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-sky-800 mb-1">
               Email
@@ -91,4 +106,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
