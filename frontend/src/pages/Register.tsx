@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { registerUser } from "../utils/autApi";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../utils/autApi";
 
 function Register() {
   const { setUser } = useAuth();
+
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -21,13 +22,13 @@ function Register() {
       const user = await registerUser(name, email, password);
       if (user) {
         setUser(user);
-        toast.success("Welcome back! 👋");
+        toast.success("Account created successfully 👋");
         setTimeout(() => navigate("/"), 2000);
       } else {
-        toast.error("Invalid email or password.");
+        toast.error("Registration failed. Try again.");
       }
     } catch (error: any) {
-      toast.error(error.message || "Login failed");
+      toast.error(error.message || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -50,10 +51,11 @@ function Register() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full rounded-lg border border-sky-200 px-4 py-2 focus:ring-2 focus:ring-sky-300 outline-none"
-              placeholder="Enter your Name"
+              placeholder="Enter your email"
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-sky-800 mb-1">
               Email
@@ -88,14 +90,14 @@ function Register() {
             className="w-full mt-5 rounded-lg bg-linear-to-r from-sky-400 to-cyan-400 text-white py-2 font-semibold hover:from-sky-500 hover:to-cyan-500 transition"
             disabled={loading}
           >
-            {loading ? "submitting" : "login"}
+            {loading ? "submitting" : "Register"}
           </button>
         </form>
 
         <p className="text-sm text-sky-700 text-center mt-4">
           Don’t have an account?
           <a
-            className="text-cyan-600 font-semibold hover:underline"
+            className='  className="text-cyan-600 font-semibold hover:underline"'
             href="/register"
           >
             Register
